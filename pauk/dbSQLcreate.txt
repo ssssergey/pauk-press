@@ -1,0 +1,1 @@
+CREATE TABLE main (rss_source TEXT, article_title TEXT, article_text TEXT, article_time TEXT, extraction_time TEXT, country TEXT, id INTEGER PRIMARY KEY AUTOINCREMENT);
