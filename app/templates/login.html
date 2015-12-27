@@ -1,22 +1,19 @@
-﻿{% extends "header.html" %}
+﻿{% extends "base.html" %}
 
-{% block body %}
-<body>
+{% block content %}
 
-<div class="container">
-	<br>
-	<h4>Введите логин:</h4>
-	<br>
-	<form aciton="" class="form-inline" method="post">
-		<input type="text" class="form-control" placeholder="Ваше имя" name="username" value="{{request.form.username}}">
-		<input type="password" class="form-control" placeholder="Пароль" name="password" value="{{request.form.password}}">
-		<input class="btn btn-default" type="submit" value="Вход">
-	</form>
-	
-	<p>{{error}}</p>
 
-</div>
+  <h1>Войти</h1>
 
-</body>
+    {% from "_formhelpers.html" import render_field %}
+		<form method=post action="/login">
+            {{form.csrf_token}}
+			<dl>
+				{{render_field(form.username)}}
+				{{render_field(form.password)}}
+			</dl>
+			<p>{{ form.remember_me }} Запомнить меня</p>
+            <p><input type="submit" value="Войти"></p>
+        </form>
 
 {% endblock %}

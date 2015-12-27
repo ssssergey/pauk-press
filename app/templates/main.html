@@ -1,102 +1,6 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-	<title>Военные новости</title>
-	<meta content='военные новости, военные учения, УБМ, армия, онлайн, on-line' name='keywords'/>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
-	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
-	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-</head>
-  
-  
-<header>
-	<nav class="navbar navbar-default" style="margin-bottom: 0px">
-	<div class="container-fluid">
+{% extends "base.html" %}
 
-	    <div class="navbar-header">
-	      <a class="navbar-brand" href="#" style="font-size: 35px; font-family: 'Lobster'; margin-left: 20px"> ПАУК </a>
-	    </div>
-
-
-	<!--
-		<a href="/dashboard/">
-			<button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:10px; margin-left:5px">
-		  		<span class="glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp Обучение
-			</button>
-		</a>
-	-->
-		<ul class="nav navbar-nav navbar-right">
-			<div style="margin-right: 15px; margin-left: 15px; margin-top: 10px; margin-bottom: 5px;"  class="container-fluid">
-				<a role="presentation" class="active" data-toggle="modal" data-target="#exampleModal" href="#"><span class="glyphicon glyphicon-log-in"></span> Вход&nbsp;&nbsp;&nbsp;</a>
-				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				  <div class="modal-dialog">
-					<div class="modal-content">
-					  <div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						<h4 class="modal-title" id="exampleModalLabel">Вход</h4>
-					  </div>
-					  <div class="modal-body">
-						  <div class="container-fluid">
-							  <form action="" class="form-inline" method="post">
-								<input type="text" class="form-control" placeholder="Имя пользователя" name="username" value="">
-								 <input type="password" class="form-control" placeholder="Пароль" name="password" value="">
-								<input class="btn btn-primary" type="submit" value="Login">
-							  </form>
-							  
-								<div class="container">
-								<br>
-							   <p>Нет аккаунта? <a href='/register'>Зарегистрироваться</a>.</p>
-							   <br>
-								
-							  </div>
-						</div>
-					  </div>
-
-					</div>
-				  </div>
-				</div>
-					
-			<a role="presentation" class="active" data-toggle="modal" data-target="#register" href="#"><span class="glyphicon glyphicon-pencil"></span> Регистрация</a>
-			<div class="modal fade" id="register" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			  	<div class="modal-dialog">
-					<div class="modal-content">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							<h4 class="modal-title" id="exampleModalLabel">Регистрация</h4>
-						</div>
-					  	<div class="modal-body">
-						  	<div class="container">
-								<form method=post action="/register">
-								  <dl>
-										<dt><label for="username">Имя пользователя</label>
-										<dd><input id="username" name="username" type="text" value="">
-										</dd>
-										<dt><label for="email">Email</label>
-										<dd><input id="email" name="email" type="text" value="">
-										</dd>													
-										<dt><label for="password">Новый пароль</label>
-										<dd><input id="password" name="password" type="password" value="">
-										</dd>											
-										<dt><label for="confirm">Повторите пароль</label>
-										<dd><input id="confirm" name="confirm" type="password" value="">
-										</dd>
-								  </dl>
-								  <input type=submit value=Зарегистрировать>
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-	  	</div>
-	  	</ul>
-	</div>
-	</nav>
-</header>
-  
-<body>
+{% block content %}
 	<div class="container" align="center" style="height:80%">
 		<div class="row">
 			<div class="col-md-6">
@@ -166,45 +70,8 @@
 			<br/>
 			<br/>
 
-			</div>
+		</div>
 
 	</div>
-  
- 	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-</body>
-  
-<!-- Yandex.Metrika informer -->
-<a href="https://metrika.yandex.ru/stat/?id=30940756&amp;from=informer"
-target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/30940756/1_0_F7F8FFFF_D7D8E0FF_0_pageviews"
-style="width:80px; height:15px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры)" onclick="try{Ya.Metrika.informer({i:this,id:30940756,lang:'ru'});return false}catch(e){}"/></a>
-<!-- /Yandex.Metrika informer -->
 
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-(function (d, w, c) {
-    (w[c] = w[c] || []).push(function() {
-        try {
-            w.yaCounter30940756 = new Ya.Metrika({id:30940756,
-                    webvisor:true,
-                    clickmap:true,
-                    trackLinks:true,
-                    accurateTrackBounce:true});
-        } catch(e) { }
-    });
-
-    var n = d.getElementsByTagName("script")[0],
-        s = d.createElement("script"),
-        f = function () { n.parentNode.insertBefore(s, n); };
-    s.type = "text/javascript";
-    s.async = true;
-    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
-
-    if (w.opera == "[object Opera]") {
-        d.addEventListener("DOMContentLoaded", f, false);
-    } else { f(); }
-})(document, window, "yandex_metrika_callbacks");
-</script>
-<noscript><div><img src="//mc.yandex.ru/watch/30940756" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
-</html>
+{% endblock %}

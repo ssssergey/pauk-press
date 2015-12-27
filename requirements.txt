@@ -20,6 +20,7 @@ decorator==4.0.6
 flipflop==1.0
 guess-language==0.2
 itsdangerous==0.24
+passlib==1.6.5
 pbr==1.8.1
 python-openid==2.2.5
 pytz==2015.7

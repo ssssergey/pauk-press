@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        {% from "_formhelpers.html" import render_field %}
+		<form method=post action="/feedback">
+            {{form.csrf_token}}
+			<dl>
+				{{render_field(form.username)}}
+				{{render_field(form.message,rows=15,cols=90)}}
+			</dl>
+            <p><input type="submit" value="Отправить"></p>
+        </form>
+
+{% endblock %}

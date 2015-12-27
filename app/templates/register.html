@@ -1,26 +1,24 @@
-﻿{% extends "header.html" %}
+﻿{% extends "base.html" %}
 
-{% block body %}
-<body>
-	<div class="container">
-		<h4>Регистрация</h4>
+{% block content %}
+	<div class = "container">
+		<h4>Register</h4>
 		<br>
 		{% from "_formhelpers.html" import render_field %}
-		<form method=post action="/register/">
+		<form method=post action="/register">
+			{{form.csrf_token}}
 			<dl>
-				{{ render_field(form.username) }}
-				{{ render_field(form.email) }}
-				{{ render_field(form.password) }}
-				{{ render_field(form.confirm) }}
-				{{ render_field(form.accept_tos) }}
+				{{render_field(form.username)}}
+				{{render_field(form.email)}}
+				{{render_field(form.password)}}
+				{{render_field(form.confirm)}}
 			</dl>
-			<p><input type=submit value=Регистрация></p>
+			<p><input type=submit value=Зарегистрироваться></p>
 		</form>
+		
 		{% if error %}
-			<p class="error"><strong>Ошибка: </strong>{{error}}</p>
+			<p class="error"><strong>Error:</strong>{{error}}</p>
 		{% endif %}
+
 	</div>
-</body>
-
-
 {% endblock %}

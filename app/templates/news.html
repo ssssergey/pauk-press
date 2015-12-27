@@ -1,66 +1,31 @@
-{% extends "header.html" %}
+{% extends "base.html" %}
 
-{% block body %}
+{% block content %}
 
-    
-	<div class="container">
-		<div class="row">
+{#	<div class="container">#}
+{#		<div class="row">#}
         <h2>Вы можете:</h2>
         <p>- просматривать новости по одной, нажимая на заголовки;</p>
         <p>- получить те новости, которые Вас заинтересовали, в виде <mark>единого текста</mark>, отметив их галочкой и нажав кнопку в нижнем правом углу. Скопируйте полученный текст себе в Word (<kbd>Ctrl+A</kbd>, <kbd>Ctrl+C</kbd>, <kbd>Ctrl+V</kbd>).</p>
-        </div>
-        <div class="row">   
+{#        </div>#}
+{#        <div class="row">   #}
             <form action="/download_articles/" method=post target="_blank">
                 <div class="col-md-11">
             		<dt class="list-group">
             			{% for t in NEWS %}
                             <dd class="list-group-item">
                             <input type=checkbox name="selected" value="{{ t[3] }}">
-            				<a href="{{ url_for('news_body', id=t[3], url=request.path) }}" target="_blank">{{t[1]}} - {{t[0]}} ("{{t[2]}}")</a>
+            				<a href="{{ url_for('news_body', id=t[3]) }}" target="_blank">{{t[1]}} - {{t[0]}} ("{{t[2]}}")</a>
                             </dd>
             			{% endfor %}
             		</dt>
                 </div>
-                <div class="col-md-1">
-                    <button type=submit class="btn btn-warning" style="position: fixed; bottom: 0; right: 0"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>   Отобразить<br>выбранное</button>
+                <div>
+                    <button type=submit class="btn btn-warning" style="position: fixed; bottom: 3px; right: 3px"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>   Отобразить<br>выбранное</button>
                 </div>
             </form>
-        </div>
-	</div>
+{#        </div>#}
+{#	</div>#}
 
-    <div class="container-fluid" align="right"> 
-        <!-- Yandex.Metrika informer -->
-        <a href="https://metrika.yandex.ru/stat/?id=30940756&amp;from=informer"
-        target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/30940756/3_0_F7F8FFFF_D7D8E0FF_0_pageviews"
-        style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" onclick="try{Ya.Metrika.informer({i:this,id:30940756,lang:'ru'});return false}catch(e){}"/></a>
-        <!-- /Yandex.Metrika informer -->
-    </div>
-        <!-- Yandex.Metrika counter -->
-        <script type="text/javascript">
-        (function (d, w, c) {
-            (w[c] = w[c] || []).push(function() {
-                try {
-                    w.yaCounter30940756 = new Ya.Metrika({id:30940756,
-                            webvisor:true,
-                            clickmap:true,
-                            trackLinks:true,
-                            accurateTrackBounce:true});
-                } catch(e) { }
-            });
-
-            var n = d.getElementsByTagName("script")[0],
-                s = d.createElement("script"),
-                f = function () { n.parentNode.insertBefore(s, n); };
-            s.type = "text/javascript";
-            s.async = true;
-            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
-
-            if (w.opera == "[object Opera]") {
-                d.addEventListener("DOMContentLoaded", f, false);
-            } else { f(); }
-        })(document, window, "yandex_metrika_callbacks");
-        </script>
-        <noscript><div><img src="//mc.yandex.ru/watch/30940756" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-        <!-- /Yandex.Metrika counter -->
 
 {% endblock %}
