@@ -1,0 +1,33 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+	<div class="container" align="left" style="height:80%">
+		<h2>{{ ARTICLE[0] }}</h2>
+		<p style="font-size: 1.2em">{{ ARTICLE[3] }}</p>
+		<p>{{ ARTICLE[1] }}</p>
+		<a href="{{ SOURCE_URL }}"><p>("{{ ARTICLE[2] }}")</p></a>
+	</div>
+
+
+		<div class="row">
+			<div class="col-md-6 col-md-offset-1 padding-top">
+				<form action="{{ url_for('news_body_edit',id = id)}}" method = "post">
+					<div class="form-group">
+						<label for="name">Изменить страну на:</label>
+						<input type ="text" class="form-control" name="name" value="Страна">
+						<div class="padding-bottom"></div>
+						<button type="submit" class="btn btn-default" id="submit" type="submit">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Сохранить</button>
+						<a href = '{{url_for('main_edit')}}'>
+							<button class="btn btn-default delete">
+							<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Отменить</button>
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

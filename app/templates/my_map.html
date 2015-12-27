@@ -1,0 +1,152 @@
+{% extends "header.html" %}
+{% block body %}
+	<style>
+		.leaflet-map-pane {
+		z-index: 2 !important;
+		}
+		.leaflet-google-layer {
+		z-index: 1 !important;
+		}
+	</style>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css" />
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+	<script src="http://code.jquery.com/jquery-latest.js"></script>
+	<!-- <script src="http://matchingnotes.com/javascripts/leaflet-google.js"></script> 
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/v0.4.0/dist/MarkerCluster.Default.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/v0.4.0/dist/MarkerCluster.css">
+	<script src="https://cdn.rawgit.com/Leaflet/Leaflet.markercluster/v0.4.0/dist/leaflet.markercluster.js"></script> -->
+	<script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/Leaflet.fullscreen.min.js'></script>
+	<link href='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v0.0.4/leaflet.fullscreen.css' rel='stylesheet' />
+	<!-- Load Esri Leaflet from CDN -->
+	<script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet/1.0.0-rc.6/esri-leaflet.js"></script>
+	<script src="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/1.0.0-rc.4/esri-leaflet-geocoder.js"></script>
+	<link rel="stylesheet" type="text/css" href="http://cdn-geoweb.s3.amazonaws.com/esri-leaflet-geocoder/1.0.0-rc.4/esri-leaflet-geocoder.css">
+
+	<div class="container">
+		<div class="row" align="center">
+			<!-- <h1>Чистая карта</h1> -->
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<ul>
+					<li>Чтобы развернуть карту на весь экран, нажмите знак-рамку в левом верхнем углу карты.</li>
+					<li>В поиске желательно набирать на латинице.</li>
+					<li>Чтобы подписать населенный пункт, найдите его по поиску, кликните на определившееся место на карте и введите название в появившемся окне. Удалить можно повторным нажатием на точку или название. Название можно перемещать мышкой, точку - нельзя.</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row" style="width:90%; height:300px; margin: 0 auto;" id="map"></div>
+		<div class="row" id="coord" align="center"></div>
+		<br>
+		<div class="row">
+			<a href="http://share.mapbbcode.org/" target="_blank"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-globe" aria-hidden="true"></span>&nbsp;&nbsp;&nbspОткрыть чужую карту</button></a>
+			<br>
+			<br>
+			<!-- Yandex.Metrika informer -->
+			<a href="https://metrika.yandex.ru/stat/?id=30940756&amp;from=informer"
+			target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/30940756/3_0_F7F8FFFF_D7D8E0FF_0_pageviews"
+			style="width:88px; height:31px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" onclick="try{Ya.Metrika.informer({i:this,id:30940756,lang:'ru'});return false}catch(e){}"/></a>
+			<!-- /Yandex.Metrika informer -->
+		</div>
+
+
+
+	</div>
+
+
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+	(w[c] = w[c] || []).push(function() {
+		try {
+			w.yaCounter30940756 = new Ya.Metrika({id:30940756,
+					webvisor:true,
+					clickmap:true,
+					trackLinks:true,
+					accurateTrackBounce:true});
+		} catch(e) { }
+	});
+
+	var n = d.getElementsByTagName("script")[0],
+		s = d.createElement("script"),
+		f = function () { n.parentNode.insertBefore(s, n); };
+	s.type = "text/javascript";
+	s.async = true;
+	s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+	if (w.opera == "[object Opera]") {
+		d.addEventListener("DOMContentLoaded", f, false);
+	} else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/30940756" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+			<script>
+				var map = L.map('map').setView([41.784444, 43.814444], 6);
+				L.tileLayer('http://api.tiles.mapbox.com/v4/{mapid}/{z}/{x}/{y}.png?access_token=pk.eyJ1Ijoic3Nzc2VyZ2V5IiwiYSI6IjZ1QmF3MXMifQ.3qKpluEkQd34azbPjX60-g', {
+					maxZoom: 18,
+					mapid: 'ssssergey.9156cfc8'
+				}).addTo(map);
+				
+				L.control.fullscreen({ position: 'topleft' }).addTo(map);
+				var searchControl = new L.esri.Geocoding.Controls.Geosearch({ position: 'topleft', useMapBounds: false }).addTo(map);
+
+				var results = new L.LayerGroup().addTo(map);
+
+				  searchControl.on('results', function(data){
+					results.clearLayers();
+					for (var i = data.results.length - 1; i >= 0; i--) {
+					  results.addLayer(L.marker(data.results[i].latlng));
+					}
+				  });
+				
+				var borders = {"type":"FeatureCollection","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:OGC:1.3:CRS84"}},"features":[
+				{"type":"Feature","properties":{"Name":"krim_border","Description":""},"geometry":{"type":"LineString","coordinates":[[33.5450363,46.001016,0],[33.5961914,46.0775176,0],[33.5934448,46.1148957,0],[33.6088893,46.1321484,0],[33.6373901,46.1398797,0],[33.6143875,46.2254529,0],[33.6449432,46.228303,0],[33.7379837,46.1862483,0],[33.7747125,46.1988489,0],[33.8186646,46.2045473,0],[34.0438843,46.1075173,0],[34.0713501,46.1170376,0],[34.1262817,46.1037088,0],[34.1812134,46.0694197,0],[34.236145,46.0560793,0],[34.3212891,46.0598911,0],[34.3611145,46.0484548,0],[34.4023132,46.0138929,0],[34.4146729,45.9836037,0],[34.4448977,45.961533,0],[34.4805908,45.9418395,0],[34.5018753,45.9431538,0],[34.5162964,45.9511497,0],[34.5574951,45.9931454,0],[34.5959473,45.9950535,0],[34.6536255,45.9759692,0],[34.7528457,45.9100776,0],[34.8026276,45.902194,0],[34.8019409,45.8039139,0],[34.9777222,45.7560262,0]]}},
+				{"type":"Feature","properties":{},"geometry":{"type":"LineString","coordinates":[[42.08107,43.20518],[42.10854,43.20317],[42.14012,43.18916],[42.13188,43.17314],[42.11746,43.17364],[42.11334,43.16713],[42.11952,43.1521],[42.03644,43.05635],[42.0076,43.05283],[41.93687,43.02724],[41.8943,43.02573],[41.87164,43.00615],[41.86821,42.98657],[41.8998,42.97552],[41.91044,42.96597],[41.89327,42.9431],[41.91113,42.90715],[41.94683,42.8981],[41.93928,42.88527],[41.89499,42.86917],[41.88023,42.8513],[41.87748,42.8367],[41.89053,42.83771],[41.91319,42.77776],[41.90083,42.76264],[41.94958,42.67966],[41.93722,42.66981],[41.93619,42.66174],[41.94923,42.63977],[41.92211,42.63244],[41.89568,42.62259],[41.88297,42.60844],[41.861,42.59758],[41.83216,42.55359],[41.77105,42.53133],[41.76487,42.52399],[41.72607,42.50855],[41.71646,42.51311],[41.69621,42.50956],[41.6502,42.48172],[41.64814,42.47235],[41.6581,42.43765],[41.64368,42.43359],[41.63029,42.43562],[41.6217,42.43233],[41.60969,42.43511],[41.55922,42.41205],[41.54926,42.41205]]}},
+				{"type":"Feature","properties":{"Name":"southosetia_border","Description":""},"geometry":{"type":"LineString","coordinates":[[43.79425,42.74298],[43.78052,42.7107],[43.75443,42.69253],[43.73108,42.68445],[43.70911,42.68445],[43.71735,42.67335],[43.70636,42.65921],[43.69263,42.64406],[43.66241,42.64406],[43.64662,42.64103],[43.63632,42.62992],[43.63632,42.62284],[43.62259,42.61375],[43.61504,42.61072],[43.57727,42.58089],[43.60474,42.56926],[43.5965,42.56522],[43.59238,42.55106],[43.59993,42.54347],[43.61435,42.54448],[43.6171,42.54145],[43.59787,42.50805],[43.60268,42.48121],[43.58276,42.47007],[43.59169,42.40622],[43.62259,42.38644],[43.59238,42.35651],[43.62671,42.33723],[43.66173,42.3352],[43.67477,42.322],[43.66859,42.30778],[43.63495,42.28442],[43.61572,42.27985],[43.60474,42.25495],[43.59787,42.21174],[43.6068,42.21174],[43.6322,42.19699],[43.6322,42.18121],[43.67065,42.16391],[43.68027,42.16595],[43.70773,42.1433],[43.72971,42.13464],[43.7273,42.14075],[43.71048,42.14533],[43.71597,42.15424],[43.71117,42.15933],[43.71357,42.1606],[43.71941,42.15908],[43.72421,42.16086],[43.73245,42.15959],[43.72559,42.16824],[43.73726,42.16417],[43.7431,42.16926],[43.76953,42.1662],[43.77125,42.16162],[43.80764,42.16162],[43.8121,42.15093],[43.80249,42.14788],[43.78464,42.1489],[43.78395,42.14431],[43.79631,42.14126],[43.79803,42.13413],[43.79047,42.13311],[43.79837,42.12446],[43.83957,42.10892],[43.85811,42.13362],[43.8739,42.13311],[43.86463,42.1545],[43.86909,42.16773],[43.87871,42.16875],[43.88763,42.16111],[43.91373,42.16188],[43.92815,42.183],[43.92437,42.18885],[43.92952,42.19419],[43.91785,42.19724],[43.91682,42.19978],[43.9333,42.20487],[43.98376,42.20182],[43.98994,42.2153],[44.03595,42.21479],[44.06479,42.24199],[44.08779,42.2336],[44.09637,42.22216],[44.09672,42.2153],[44.10736,42.21148],[44.10118,42.20462],[44.10187,42.19292],[44.1053,42.18808],[44.11011,42.18757],[44.10908,42.17435],[44.13586,42.17384],[44.13002,42.16188],[44.14375,42.15297],[44.14204,42.14381],[44.14581,42.13871],[44.14444,42.13209],[44.14993,42.12751],[44.1592,42.14024],[44.16744,42.14024],[44.17156,42.14864],[44.18015,42.14431],[44.1877,42.14915],[44.18976,42.14584],[44.19353,42.14813],[44.19525,42.16569],[44.20006,42.16417],[44.20074,42.14966],[44.20761,42.14711],[44.21551,42.15246],[44.22066,42.1517],[44.22958,42.1377],[44.21997,42.13362],[44.23233,42.11987],[44.24675,42.12038],[44.2543,42.10968],[44.26323,42.11019],[44.26735,42.113],[44.28211,42.11121],[44.26186,42.04904],[44.27147,42.04445],[44.27834,42.04725],[44.27868,42.03654],[44.28211,42.03654],[44.29344,42.06892],[44.30614,42.07529],[44.31404,42.04394],[44.30134,42.03654],[44.30271,42.02558],[44.32159,42.02252],[44.32846,42.03986],[44.33464,42.04317],[44.35902,42.04445],[44.36657,42.05465],[44.42802,42.05388],[44.43489,42.047],[44.48914,42.04445],[44.48364,42.06892],[44.49532,42.06637],[44.53068,42.04164],[44.55746,42.06229],[44.54819,42.07453],[44.52621,42.06867],[44.52141,42.09567],[44.56638,42.11682],[44.5602,42.13464],[44.57943,42.15679],[44.56261,42.17078],[44.60415,42.19215],[44.61273,42.18961],[44.62475,42.20106],[44.61342,42.22572],[44.62269,42.24606],[44.6093,42.29534],[44.59831,42.30296],[44.57909,42.34916],[44.60793,42.36666],[44.59866,42.37858],[44.56192,42.38163],[44.5475,42.38873],[44.54029,42.40445],[44.48433,42.41205],[44.44794,42.45842],[44.40125,42.46323],[44.39369,42.45943],[44.37584,42.4721],[44.35593,42.46982],[44.33464,42.49261],[44.35215,42.50324],[44.37584,42.50374],[44.37876,42.51134],[44.36159,42.525],[44.34631,42.5269],[44.34391,42.54701],[44.31885,42.5551],[44.30614,42.57837],[44.26941,42.60389],[44.25087,42.59113],[44.22615,42.61046],[44.23164,42.62714]]}}]}
+				L.geoJson(borders,{style: {"color": "red", "weight": 5, "opacity":1}}).addTo(map);
+
+				
+				var town_icon = new L.Icon({iconUrl: '../static/dot.png', 
+									iconSize: [30,30], 
+									iconAnchor:[15, 15]});
+				
+				
+				map.on('click', function(e) {
+					results.clearLayers();
+					
+					var town_marker = new L.marker([e.latlng.lat, e.latlng.lng],{icon: town_icon})
+													.addTo(map)
+													.on('click', function() {map.removeLayer(town_marker)});
+					
+					var input_name = prompt("Введите город");
+					var name_icon = L.divIcon({className: 'my-div-icon', 
+												iconSize:null, 
+												html:'<div style = "background: yellow; text-align: center"; class="my-div-icon">' + input_name + '</div>', 
+												iconAnchor:[-5, -5]});
+					var name_marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: name_icon, draggable: true, riseOnHover: true})
+												.addTo(map)
+												.on('click', function() {map.removeLayer(name_marker)});
+					
+					dd_format = e.latlng.lat + "N  " + e.latlng.lng + "E"
+					lat1 = e.latlng.lat;
+					degrees = Math.floor(lat1);
+					minutes = (lat1 - degrees)*60;
+					seconds = (minutes - Math.floor(minutes)) * 60;
+					var lat = degrees + " " + Math.floor(minutes) + " " + Math.floor(seconds) + "N"
+					lng1 = e.latlng.lng;
+					degrees = Math.floor(lng1);
+					minutes = (lng1 - degrees)*60;
+					seconds = (minutes - Math.floor(minutes)) * 60;
+					var lng = degrees + " " + Math.floor(minutes) + " " + Math.floor(seconds) + "E"
+					dms_format = lat + "  " + lng
+					var div_coord = document.getElementById('coord');
+					div_coord.innerHTML = "Координаты в дробном формате: " + dd_format + "<br>Координаты в обычном формате:" + dms_format;
+					}
+				);
+			</script>
+
+{% endblock %}

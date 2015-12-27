@@ -1,0 +1,28 @@
+{% extends "header_edit.html" %}
+
+{% block body %}
+
+    
+	<div class="container">
+        <div class="row">   
+            <form action="/download_articles/" method=post target="_blank">
+                <div class="col-md-11">
+            		<dt class="list-group">
+            			{% for t in NEWS %}
+                            <dd class="list-group-item">
+                            <input type=checkbox name="selected" value="{{ t.id }}">
+            				<a href="{{ url_for('news_body_edit', id=t.id, url=request.path) }}" target="_blank">{{t.article_time}} - {{t.article_title}} ("{{t.rss_source}}")</a>
+                            </dd>
+            			{% endfor %}
+            		</dt>
+                </div>
+                <div class="col-md-1">
+                    <button type=submit class="btn btn-danger" style="position: fixed; bottom: 0; right: 0"><span class="glyphicon glyphicon-fire" aria-hidden="true"></span>   Отобразить</button>
+                </div>
+            </form>
+        </div>
+
+	</div>
+
+
+{% endblock %}

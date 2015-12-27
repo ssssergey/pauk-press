@@ -1,0 +1,22 @@
+﻿{% extends "header.html" %}
+
+{% block body %}
+<body>
+
+<div class="container">
+	<br>
+	<h4>Введите логин:</h4>
+	<br>
+	<form aciton="" class="form-inline" method="post">
+		<input type="text" class="form-control" placeholder="Ваше имя" name="username" value="{{request.form.username}}">
+		<input type="password" class="form-control" placeholder="Пароль" name="password" value="{{request.form.password}}">
+		<input class="btn btn-default" type="submit" value="Вход">
+	</form>
+	
+	<p>{{error}}</p>
+
+</div>
+
+</body>
+
+{% endblock %}
