@@ -4,9 +4,10 @@
 
 {#	<div class="container">#}
 {#		<div class="row">#}
-        <h2>Вы можете:</h2>
+        <h4>Вы можете:</h4>
         <p>- просматривать новости по одной, нажимая на заголовки;</p>
         <p>- получить те новости, которые Вас заинтересовали, в виде <mark>единого текста</mark>, отметив их галочкой и нажав кнопку в нижнем правом углу. Скопируйте полученный текст себе в Word (<kbd>Ctrl+A</kbd>, <kbd>Ctrl+C</kbd>, <kbd>Ctrl+V</kbd>).</p>
+        {% if country %}<h2 style="text-align: center"><span class="label label-info">{{ country }}</span></h2>{% endif %}
 {#        </div>#}
 {#        <div class="row">   #}
             <form action="/download_articles/" method=post target="_blank">

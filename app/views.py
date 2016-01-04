@@ -70,7 +70,7 @@ def register():
 			db.session.add(user)
 			db.session.commit()
 
-			flash(u"Спасибо за регистрацию!")
+			flash(u"Вы успешно зарегистрировались!")
 			login_user(user)
 			return redirect(request.args.get('next') or url_for('index'))
 	return render_template("register.html", form=form)
@@ -154,11 +154,13 @@ def feedback():
 	if request.method == "POST" and form.validate():
 		nickname  = form.username.data.encode('utf8')
 		message = form.message.data.encode('utf8')
-
-		with open('feedback.txt', 'a') as history_txt:
+		import os
+		basedir = os.path.abspath(os.path.dirname(__file__))
+		feedback_path = os.path.join(basedir, 'feedback.txt')
+		with open(feedback_path, 'a') as history_txt:
 			history_txt.write('{} | {}\n{}\n\n'.format(datetime.datetime.utcnow(),nickname,message))
 
-		flash(u"Спасибо за обратную связь!")
+		flash(u"Ваше сообщение получено!")
 		return redirect(request.args.get('next') or url_for('index'))
 	if g.user.is_authenticated:
 		form.username.data = g.user.nickname
@@ -195,12 +197,12 @@ def news_search():
 
 @app.route('/<country>')
 def find_country(country):
-	query = Main.query.filter(Main.country == country).order_by("article_time desc").all()
+	query = Main.query.filter(Main.country == country).order_by("article_time desc").limit(1500).all()
 	posts = []
 	for row in query:
 		new_row = [row.article_title, ConvertTimeFormat(row.article_time),row.rss_source,row.id]
 		posts.append(new_row)
-	return render_template("news.html", NEWS=posts)
+	return render_template("news.html", NEWS=posts, country=country)
 
 @app.route('/news_body/<id>')
 def news_body(id):
@@ -257,7 +259,10 @@ def news_page_md():
 	NEWS = sea_help_function(u"средиземно")
 	return render_template("news.html", NEWS=NEWS)
 
-
+@app.route('/pers_gulf/')
+def news_pers_gulf():
+	NEWS = sea_help_function(u"персидск")
+	return render_template("news.html", NEWS=NEWS)
 
 def exercises_help_function(*args):
 	bunch = []
@@ -286,6 +291,7 @@ def sea_help_function(*args):
 	query = Main.query.filter(or_(Main.article_title.like(u'%морск%'),
 									Main.article_title.like(u'%море%'),
 									Main.article_title.like(u'%акватори%'),
+									Main.article_title.like(u'%залив%'),
 							   ))
 	query = query.filter(or_(*[Main.article_title.like(i) for i in bunch])).order_by("article_time desc")
 	posts = []
@@ -308,7 +314,7 @@ def download_articles():
 	except Exception as e:
 		return (str(e))
 
-@app.route('/map')
+@app.route('/map/')
 def map_page():
 	return render_template("my_map.html")
 
@@ -319,7 +325,7 @@ def page_not_found(e):
 # GET FILE
 @app.route('/get_file/')
 def get_file():
-	return send_file('static/download/Паук 3.1.rar', as_attachment=True)
+	return send_file('static/download/Паук 3.4.rar', as_attachment=True)
 
 def ConvertTimeFormat(utc_format):
 	try:

@@ -2,7 +2,6 @@
 import datetime
 
 from flask import Flask, render_template, request, url_for, redirect, flash,  jsonify
-import sqlite_connect
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
 
