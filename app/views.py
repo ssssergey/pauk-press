@@ -9,6 +9,8 @@ from passlib.handlers.sha2_crypt import sha256_crypt
 from sqlalchemy import func, or_, and_
 import datetime
 
+from emails import feedback_notification, download_notification, registration_notification
+
 rss_dict = {u'Би-Би-Си': 'http://www.bbc.co.uk/russian/',
 			u'APA.AZ': 'http://ru.apa.az/',
 			u'Тренд': 'http://www.trend.az/',
@@ -34,13 +36,25 @@ rss_dict = {u'Би-Би-Си': 'http://www.bbc.co.uk/russian/',
 			u'Фергана': 'http://www.fergananews.com/',
 			u'Апсны-Пресс': 'http://www.apsnypress.info/',
 			u'Кавказский узел': 'http://www.kavkaz-uzel.ru/',
-			u'Грузия-онлайн': 'http://apsny.ge/'}
+			u'Новости-Грузия': 'http://newsgeorgia.ru/',
+			u'САНА': 'http://sana.sy/ru/',
+			u'РИА Новости': 'http://ria.ru/',
+			u'Грузия-онлайн': 'http://apsny.ge/',
+			u'ДАН':'http://dan-news.info/',
+			u'Анадолу':'http://aa.com.tr/ru/',
+			u'Арменпресс':'http://armenpress.am/rus/'
+			}
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template("main.html")
+	query = Main.query.order_by("article_time desc").limit(100).all()
+	posts = []
+	for row in query:
+		new_row = [row.article_title, ConvertTimeFormat(row.article_time),row.rss_source,row.id]
+		posts.append(new_row)
+	return render_template("main.html", NEWS=posts)
 
 @app.route('/main_edit/')
 def main_edit():
@@ -69,7 +83,7 @@ def register():
 			user = User(nickname=nickname, email=email, password=password)
 			db.session.add(user)
 			db.session.commit()
-
+			registration_notification(nickname, 'is registered!')
 			flash(u"Вы успешно зарегистрировались!")
 			login_user(user)
 			return redirect(request.args.get('next') or url_for('index'))
@@ -152,15 +166,16 @@ def feedback():
 	print form.errors
 
 	if request.method == "POST" and form.validate():
-		nickname  = form.username.data.encode('utf8')
-		message = form.message.data.encode('utf8')
+		nickname  = form.username.data
+		message = form.message.data
 		import os
 		basedir = os.path.abspath(os.path.dirname(__file__))
 		feedback_path = os.path.join(basedir, 'feedback.txt')
 		with open(feedback_path, 'a') as history_txt:
-			history_txt.write('{} | {}\n{}\n\n'.format(datetime.datetime.utcnow(),nickname,message))
-
+			history_txt.write('{} | {}\n{}\n\n'.format(datetime.datetime.utcnow(),
+                                                       nickname.encode('utf8'),message.encode('utf8')))
 		flash(u"Ваше сообщение получено!")
+		feedback_notification(nickname, message)
 		return redirect(request.args.get('next') or url_for('index'))
 	if g.user.is_authenticated:
 		form.username.data = g.user.nickname
@@ -207,7 +222,7 @@ def find_country(country):
 @app.route('/news_body/<id>')
 def news_body(id):
 	query_row = Main.query.filter(Main.id == int(id)).first()
-	posts = (query_row.article_title,ConvertTimeFormat(query_row.article_time),query_row.rss_source,query_row.article_text)
+	posts = (query_row.article_title,ConvertTimeFormat(query_row.article_time),query_row.rss_source,query_row.article_text.replace('\n','<br>'))
 	source_url = rss_dict[posts[2]]
 	return render_template("news_body.html", ARTICLE=posts, SOURCE_URL=source_url)
 
@@ -314,10 +329,6 @@ def download_articles():
 	except Exception as e:
 		return (str(e))
 
-@app.route('/map/')
-def map_page():
-	return render_template("my_map.html")
-
 @app.errorhandler(404)
 def page_not_found(e):
 	return render_template("404.html")
@@ -325,7 +336,8 @@ def page_not_found(e):
 # GET FILE
 @app.route('/get_file/')
 def get_file():
-	return send_file('static/download/Паук 3.4.rar', as_attachment=True)
+	download_notification('Somebody','downloaded')
+	return send_file('static/download/Паук 3.5.rar', as_attachment=True)
 
 def ConvertTimeFormat(utc_format):
 	try:

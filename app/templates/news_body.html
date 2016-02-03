@@ -4,7 +4,7 @@
 
 	<div class="container" align="left" style="height:80%">
 		<h2>{{ ARTICLE[0] }}</h2>
-		<p style="font-size: 1.2em">{{ ARTICLE[3] }}</p>
+		<p style="font-size: 1.2em">{{ ARTICLE[3] | safe }}</p>
 		<p>{{ ARTICLE[1] }}</p>
 		<a href="{{ SOURCE_URL }}"><p>("{{ ARTICLE[2] }}")</p></a>
 	</div>

@@ -1,9 +1,10 @@
 ﻿# -*- coding: utf-8 -*-
-import datetime
-
-from flask import Flask, render_template, request, url_for, redirect, flash,  jsonify
+import os
+import time
+from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.login import LoginManager
+from flask.ext.mail import Mail
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -14,7 +15,32 @@ lm.login_message = u"Сначала войдите на сайт под свои
 lm.init_app(app)
 lm.login_view = 'login'
 
+mail = Mail(app)
 from app import views, models
 
+from config import ADMINS, MAIL_SERVER, MAIL_PORT, MAIL_USERNAME, MAIL_PASSWORD, basedir
+
+if not app.debug:
+    import logging
+    logging.Formatter.converter = time.gmtime
+    from logging.handlers import SMTPHandler
+    credentials = None
+    if MAIL_USERNAME or MAIL_PASSWORD:
+        credentials = (MAIL_USERNAME, MAIL_PASSWORD)
+    mail_handler = SMTPHandler((MAIL_SERVER, MAIL_PORT), 'no-reply@' + MAIL_SERVER, ADMINS, 'microblog failure', credentials)
+    mail_handler.setLevel(logging.ERROR)
+    app.logger.addHandler(mail_handler)
+
+if not app.debug:
+    import logging
+    logging.Formatter.converter = time.gmtime
+    from logging.handlers import RotatingFileHandler
+    file_handler = RotatingFileHandler(os.path.join(basedir, 'microblog.log'), 'a', 1 * 1024 * 1024, 10)
+    file_handler.setFormatter(logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]'))
+    app.logger.setLevel(logging.INFO)
+    file_handler.setLevel(logging.INFO)
+    app.logger.addHandler(file_handler)
+    app.logger.info('microblog startup')
+
 if __name__ == "__main__":
-	app.run(debug=True)
+    app.run(debug=True)
