@@ -174,8 +174,8 @@ def feedback():
 		with open(feedback_path, 'a') as history_txt:
 			history_txt.write('{} | {}\n{}\n\n'.format(datetime.datetime.utcnow(),
                                                        nickname.encode('utf8'),message.encode('utf8')))
-		flash(u"Ваше сообщение получено!")
 		feedback_notification(nickname, message)
+		flash(u"Ваше сообщение получено!")
 		return redirect(request.args.get('next') or url_for('index'))
 	if g.user.is_authenticated:
 		form.username.data = g.user.nickname
@@ -222,8 +222,13 @@ def find_country(country):
 @app.route('/news_body/<id>')
 def news_body(id):
 	query_row = Main.query.filter(Main.id == int(id)).first()
-	posts = (query_row.article_title,ConvertTimeFormat(query_row.article_time),query_row.rss_source,query_row.article_text.replace('\n','<br>'))
-	source_url = rss_dict[posts[2]]
+	posts = (query_row.article_title, ConvertTimeFormat(query_row.article_time), query_row.rss_source,
+			 query_row.article_text.replace('\n','<br>'))
+	url_article = query_row.article_text.split('\n')[-1]
+	if url_article[:4] == 'http':
+		source_url = url_article
+	else:
+		source_url = rss_dict[posts[2]]
 	return render_template("news_body.html", ARTICLE=posts, SOURCE_URL=source_url)
 
 
