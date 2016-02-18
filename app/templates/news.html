@@ -13,6 +13,10 @@
             <form action="/download_articles/" method=post target="_blank">
                 <div class="col-md-11">
             		<dt class="list-group">
+                        <dd class="text-primary">
+                        <input type=checkbox id="select_all" name="selectAll" value="all">
+                        <strong>&nbsp&nbspВыбрать все</strong>
+                        </dd>
             			{% for t in NEWS %}
                             <dd class="list-group-item">
                             <input type=checkbox name="selected" value="{{ t[3] }}">
@@ -27,6 +31,16 @@
             </form>
 {#        </div>#}
 {#	</div>#}
-
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script>
+        $('#select_all').change(function() {
+            var checkboxes = $(this).closest('form').find(':checkbox');
+            if($(this).is(':checked')) {
+                checkboxes.prop('checked', true);
+            } else {
+                checkboxes.prop('checked', false);
+            }
+        });
+    </script>
 
 {% endblock %}
