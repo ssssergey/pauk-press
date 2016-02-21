@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import render_template, flash, redirect, session, url_for, request, g, send_file, jsonify
+from flask import render_template, flash, redirect, session, url_for, request, g, send_file, Response
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, db, lm
 from .forms import LoginForm, RegistrationForm, FeedbackForm
@@ -8,7 +8,7 @@ from .models import User, Main
 from passlib.handlers.sha2_crypt import sha256_crypt
 from sqlalchemy import func, or_, and_
 import datetime
-
+import json
 from emails import feedback_notification, download_notification, registration_notification
 
 rss_dict = {u'Би-Би-Си': 'http://www.bbc.co.uk/russian/',
@@ -120,7 +120,7 @@ def login():
 			flash(u"Поздравляю, {}, Вы успешно вошли.".format(user.nickname))
 			return redirect(request.args.get('next') or url_for('index'))
 		else:
-			flash(u"Нерправильный логин или пароль")
+			flash(u"Неправильный логин или пароль")
 	if request.method == "POST":
 		flash(u"Неправильно заполнены поля")
 	return render_template('login.html',
@@ -208,9 +208,9 @@ def api_search(word):
 	for row in query:
 		new_row = [row.article_time, row.article_title, row.rss_source, row.id]
 		posts.append(new_row)
-	return json.dumps({'items':posts}, ensure_ascii=False)
+	return Response(json.dumps({'items':posts}, ensure_ascii=False), content_type='application/json; charset=utf-8', status=200)
 
-import json
+
 @app.route('/api_search/item/<int:id>', methods=['GET'])
 def api_item(id):
 	query_row = Main.query.filter(Main.id == int(id)).first()
@@ -224,7 +224,7 @@ def api_item(id):
 				 'title_api':'',
 				 'text_api':'',
 				 'source_api':''}
-	return json.dumps(posts, ensure_ascii=False)
+	return Response(json.dumps(posts, ensure_ascii=False), content_type='application/json; charset=utf-8', status=200)
 
 #########################################################################
 
