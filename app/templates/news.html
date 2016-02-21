@@ -13,10 +13,12 @@
             <form action="/download_articles/" method=post target="_blank">
                 <div class="col-md-11">
             		<dt class="list-group">
-                        <dd class="text-primary">
-                        <input type=checkbox id="select_all" name="selectAll" value="all">
-                        <strong>&nbsp&nbspВыбрать все</strong>
-                        </dd>
+                        {% if NEWS|length < 500 %}
+                            <dd class="text-primary">
+                            <input type=checkbox id="select_all" name="selectAll" value="all">
+                            <strong>&nbsp&nbspВыбрать все</strong>
+                            </dd>
+                        {% endif %}
             			{% for t in NEWS %}
                             <dd class="list-group-item">
                             <input type=checkbox name="selected" value="{{ t[3] }}">
