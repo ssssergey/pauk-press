@@ -8,19 +8,21 @@
 	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
 	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}" />
 	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+	  	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
   </head>
-  
 
   <body>
-
     <header>
 	<div class="container-fluid">
-
 		<a href="/">
 			<button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:10px; margin-left:5px">
 		  <span class="glyphicon glyphicon-send" aria-hidden="false"></span>&nbsp;&nbsp;&nbsp На главную страницу</button>
 		</a>
-
+		<a href="http://yasobe.ru/na/paukpress">
+			<button type="button" class="btn btn-warning" aria-label="Left Align" style="margin-top:10px; margin-left:5px">
+		  <span class="glyphicon glyphicon-piggy-bank" aria-hidden="false"></span>&nbsp;&nbsp;&nbsp Оказать помощь сайту</button>
+		</a>
 		<ul class="nav navbar-nav navbar-right">
 		  <div class="container-fluid">
 			<h5>
@@ -60,10 +62,6 @@
 		{% endblock %}
 
 	</div>
-				
-	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-
   </body>
 
 <div style="position: fixed; bottom: 0px;">

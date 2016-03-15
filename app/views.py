@@ -206,7 +206,7 @@ def api_search(word):
 	query = Main.query.filter(and_(*[i for i in args])).order_by("article_time desc").limit(1000).all()
 	posts = []
 	for row in query:
-		new_row = [row.article_time, row.article_title, row.rss_source, row.id]
+		new_row = {'date':row.article_time, 'name':row.article_title, 'from':row.rss_source, 'id':row.id}
 		posts.append(new_row)
 	return Response(json.dumps({'items':posts}, ensure_ascii=False), content_type='application/json; charset=utf-8', status=200)
 
@@ -215,15 +215,15 @@ def api_search(word):
 def api_item(id):
 	query_row = Main.query.filter(Main.id == int(id)).first()
 	if query_row:
-		posts = {'time_api':query_row.article_time,
-				 'title_api':query_row.article_title,
-				 'text_api':query_row.article_text,
-				 'source_api':query_row.rss_source}
+		posts = {'date_api':query_row.article_time,
+				 'name_api':query_row.article_title,
+				 'body_api':query_row.article_text,
+				 'from_api':query_row.rss_source}
 	else:
-		posts = {'time_api':'',
-				 'title_api':'',
-				 'text_api':'',
-				 'source_api':''}
+		posts = {'date_api':'',
+				 'name_api':'',
+				 'body_api':'',
+				 'from_api':''}
 	return Response(json.dumps(posts, ensure_ascii=False), content_type='application/json; charset=utf-8', status=200)
 
 #########################################################################
@@ -403,7 +403,7 @@ def page_not_found(e):
 @app.route('/get_file/')
 def get_file():
 	download_notification('Somebody', 'downloaded')
-	return send_file('static/download/Паук 3.5.rar', as_attachment=True)
+	return send_file('static/download/Паук 3.6.rar', as_attachment=True)
 
 
 def ConvertTimeFormat(utc_format):

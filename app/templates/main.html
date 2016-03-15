@@ -1,7 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-	<div class="container" align="center" style="height:80%">
+	<style>
+		.scrollable-menu {
+			height: auto;
+			max-height: 500px;
+			overflow-x: hidden;
+			padding: 2px;
+		}
+	</style>
+
+	<div class="container" align="center">
 		<div class="row">
 			<div class="col-md-6">
 				<h2>Найти статьи по ключевым словам</h2>
@@ -9,14 +18,15 @@
 			</div>
 			<div class="col-md-6">
 				<h2>Скачать последнего "Паука"</h2>	
-				<a href="/get_file/"><button type="button" class="btn btn-success btn-lg" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;&nbsp;&nbspСкачать "Паук 3.5"</button></a>
-				<p>Дата релиза: 05.02.2016 г.</p>
-				<p align="left" style="margin-left:30%" >- добавлены ИА "Анадолу" и ИА "Арменпресс"<br>ИСПРАВЛЕН БАГ С ЗАВИСАНИЕМ</p>
+				<a href="/get_file/"><button type="button" class="btn btn-success btn-lg" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-download" aria-hidden="true"></span>&nbsp;&nbsp;&nbspСкачать "Паук 3.6"</button></a>
+				<p>Дата релиза: 10.03.2016 г.</p>
+				<p align="left" style="margin-left:30%" >- устранено зависание при скачках интернет-соединения</p>
 
 			</div>
 		</div>
 		<div class="row">
-			<div class="well well-sm col-md-9">
+			<div class="col-md-8">
+				<div class="well well-sm">
 				<div class="row">
 					<h2>On-line база данных</h2>
 					<h3 style="line-height: 1.3em"><mark style="padding: .1em">Данные обновляются каждые 30 минут - 24 часа в сутки 7 дней в неделю.</mark></h3>
@@ -24,74 +34,52 @@
 				<div class="row">
 					<div class="btn-group" role="group" aria-label="...">
 						{% for t in ['Австралия', 'Афганистан', 'Азербайджан', 'Африка', 'Грузия', 'Европа', 'Египет', 'Израиль', 'Индия', 'Ирак', 'Иран', 'Канада', 'Китай', 'Корея', 'Латинская Америка', 'Магриб', 'Молдавия', 'Пакистан', 'США', 'Северный Кавказ', 'Сирия', 'Средняя Азия', 'Турция', 'Украина', 'ЮгоВосточная Азия', 'Япония', 'арабы ЗПЗ'] %}
-							<a href="{{ url_for('find_country', country = t) }}"><button type="button" class="btn btn-primary" style="margin-bottom: 5px">{{ t }}</button></a>
+							<a href="{{ url_for('find_country', country = t) }}"><button type="button" class="btn btn-primary" style="margin-bottom: 5px;">{{ t }}</button></a>
 						{% endfor %}
 					</div>
 				</div>
 				<div class="row">
 					<h4><abbr title="учебно-боевые мероприятия">УБМ</abbr> стран бывшего СССР</h4>
-					<div class="col-md-3">
 						<a href="/news_az/"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;&nbspУчения Азербайджана</button></a>
-					</div>
-					<div class="col-md-3">
 						<a href="/news_ge/"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;&nbspУчения Грузии</button></a>
-					</div>
-					<div class="col-md-3">
 						<a href="/news_ua/"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;&nbspУчения Украины</button></a>
-					</div>
 				</div>
 				<div class="row">
 					<h4>УБМ стран НАТО</h4>
-					<div class="col-md-3">
 						<a href="/news_na/"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;&nbspУчения НАТО</button></a>
-					</div>
-					<div class="col-md-3">
 						<a href="/news_po/"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;&nbspУчения Польши</button></a>
-					</div>
-					<div class="col-md-3">
 						<a href="/news_la/"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;&nbspУчения Прибалтики</button></a>
-					</div>
-					<div class="col-md-3">
 						<a href="/news_tr/"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-flag" aria-hidden="true"></span>&nbsp;&nbsp;&nbspУчения Турции</button></a>
-					</div>
 				</div>
 				<div class="row">
 					<h4><strong>Регионы</strong></h4>
-					<div class="col-md-3">
 						<a href="/news_bl/"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>&nbsp;&nbsp;&nbspЧерное море</button></a>
-					</div>
-					<div class="col-md-3">
 						<a href="/news_md/"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>&nbsp;&nbsp;&nbspСредиземное море</button></a>
-					</div>
-					<div class="col-md-3">
 						<a href="/pers_gulf/"><button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:5px; margin-left:5px"><span class="glyphicon glyphicon-cloud" aria-hidden="true"></span>&nbsp;&nbsp;&nbspПерсидский залив</button></a>
-					</div>
 				</div>
 				<br/>
-				<br/>
+				</div>
 			</div>
 
-			<style>
-				.scrollable-menu {
-					height: auto;
-					max-height: 460px;
-					overflow-x: hidden;
-				}
-			</style>
 
 
-			<div class="well well-sm col-md-3">
-				<h4>Последние 100 новостей</h4>
-				<ul class="scrollable-menu" style="padding: 2px">
-{#					<dt class="list-group">#}
-						{% for t in NEWS %}
-							<dd class="list-group-item">
-								<a href="{{ url_for('news_body', id=t[3]) }}" target="_blank">{{t[1]}} - {{t[0]}} ("{{t[2]}}")</a>
-							</dd>
-						{% endfor %}
-{#					</dt>#}
-				</ul>
+			<div class="col-md-4">
+				<div class="well well-sm">
+					<h4>Последние 100 новостей</h4>
+					<ul class="scrollable-menu">
+	{#					<dt class="list-group">#}
+							{% for t in NEWS %}
+								<dd class="list-group-item text-left">
+									<a href="{{ url_for('news_body', id=t[3]) }}" target="_blank">{{t[1]}} - {{t[0]}} ("{{t[2]}}")</a>
+								</dd>
+							{% endfor %}
+	{#					</dt>#}
+					</ul>
+				</div>
 			</div>
+		</div>
+		<div class="row">
+			<iframe frameborder="0" allowtransparency="true" scrolling="no" src="https://money.yandex.ru/embed/donate.xml?account=41001146628550&quickpay=donate&payment-type-choice=on&mobile-payment-type-choice=on&default-sum=100&targets=%D0%9D%D0%B0+%D0%BF%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D0%BD%D0%B8%D0%B5+%D1%81%D0%B0%D0%B9%D1%82%D0%B0&target-visibility=on&project-name=%D0%9F%D0%B0%D1%83%D0%BA&project-site=www.pauk-press.ru&button-text=05&successURL=" width="509" height="117"></iframe>
 		</div>
 	</div>
 
