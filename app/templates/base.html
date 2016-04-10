@@ -1,103 +1,179 @@
 <!DOCTYPE html>
 <html>
-  <head>
-	<title>Военные новости</title>
-	<meta content='военные новости, военные учения, УБМ, армия, онлайн, on-line' name='keywords'/>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
-	<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}" />
-	<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-	  	<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-	<script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
-  </head>
+<head>
+    <title>Военные новости</title>
+    <meta content='военные новости, военные учения, УБМ, армия, онлайн, on-line' name='keywords'/>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}"/>
+    <link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+</head>
 
-  <body>
-    <header>
-	<div class="container-fluid">
-		<a href="/">
-			<button type="button" class="btn btn-primary" aria-label="Left Align" style="margin-top:10px; margin-left:5px">
-		  <span class="glyphicon glyphicon-send" aria-hidden="false"></span>&nbsp;&nbsp;&nbsp На главную страницу</button>
-		</a>
-		<a href="http://yasobe.ru/na/paukpress">
-			<button type="button" class="btn btn-warning" aria-label="Left Align" style="margin-top:10px; margin-left:5px">
-		  <span class="glyphicon glyphicon-piggy-bank" aria-hidden="false"></span>&nbsp;&nbsp;&nbsp Оказать помощь сайту</button>
-		</a>
-		<ul class="nav navbar-nav navbar-right">
-		  <div class="container-fluid">
-			<h5>
-				<a href="{{ url_for('feedback') }}"><span class="glyphicon glyphicon-envelope"></span> Обратная связь&nbsp;&nbsp;&nbsp;</a>
-				<a href="{{ url_for('news_search') }}"><span class="glyphicon glyphicon-search"></span> Поиск&nbsp;&nbsp;&nbsp;</a>
-				{% if g.user.is_authenticated %}
-					<a href="{{ url_for('user', nickname=g.user.nickname) }}"><span class="glyphicon glyphicon-user"></span> Ваш профиль&nbsp;&nbsp;&nbsp;</a>
-					<a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Выйти&nbsp;&nbsp;&nbsp;</a>
-				{% else %}
-					<a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-copy"></span> Регистрация&nbsp;&nbsp;&nbsp;</a>
-					<a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Войти&nbsp;&nbsp;&nbsp;</a>
-				{% endif %}
+<body>
+<!-- preloader -->
+<style type="text/css">
+    .preloader_bg {
+        position: fixed;
+        background: rgba(15, 15, 15, 1);
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 200;
+    }
 
-			</h5>
-			</div>
-		</ul>
-	</div>
-	</header>
+    .preloader_content {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 201;
+        font-size: 14px;
+    }
+
+    .preloader_content span {
+        display: block;
+        margin: auto;
+        text-align: center;
+        text-transform: uppercase;
+        color: rgba(225, 225, 225, 1);
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        $('.preloader_bg, .preloader_content').fadeIn(0);
+        $(window).load(function () {
+            $('.preloader_bg').delay(250).fadeOut(1500);
+            $('.preloader_content').delay(250).fadeOut(750);
+        });
+    });
+</script>
+<div class="preloader_bg"></div>
+<div class="preloader_content">
+    <span>Идет загрузка...<br>Подождите...</span>
+</div>
+<noscript>
+    <style>
+        html, body {
+            opacity: 1 !important;
+        }
+
+        .preloader_bg, .preloader_content {
+            display: none !important;
+        }
+    </style>
+</noscript>
+<!-- /preloader -->
+<header>
+    <div class="container-fluid">
+        <a href="/">
+            <button type="button" class="btn btn-primary" aria-label="Left Align"
+                    style="margin-top:10px; margin-left:5px">
+                <span class="glyphicon glyphicon-send" aria-hidden="false"></span>&nbsp;&nbsp;&nbsp На главную страницу
+            </button>
+        </a>
+        <a href="http://yasobe.ru/na/paukpress">
+            <button type="button" class="btn btn-warning" aria-label="Left Align"
+                    style="margin-top:10px; margin-left:5px">
+                <span class="glyphicon glyphicon-piggy-bank" aria-hidden="false"></span>&nbsp;&nbsp;&nbsp Оказать помощь
+                сайту
+            </button>
+        </a>
+        <ul class="nav navbar-nav navbar-right">
+            <div class="container-fluid">
+                <h5>
+                    <a href="{{ url_for('feedback') }}"><span class="glyphicon glyphicon-envelope"></span> Обратная
+                        связь&nbsp;&nbsp;&nbsp;</a>
+                    <a href="{{ url_for('news_search') }}"><span class="glyphicon glyphicon-search"></span> Поиск&nbsp;&nbsp;&nbsp;
+                    </a>
+                    {% if g.user.is_authenticated %}
+                        <a href="{{ url_for('user', nickname=g.user.nickname) }}"><span
+                                class="glyphicon glyphicon-user"></span> Ваш профиль&nbsp;&nbsp;&nbsp;</a>
+                        <a href="{{ url_for('logout') }}"><span class="glyphicon glyphicon-log-out"></span> Выйти&nbsp;&nbsp;&nbsp;
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('register') }}"><span class="glyphicon glyphicon-copy"></span> Регистрация&nbsp;&nbsp;&nbsp;
+                        </a>
+                        <a href="{{ url_for('login') }}"><span class="glyphicon glyphicon-log-in"></span> Войти&nbsp;&nbsp;&nbsp;
+                        </a>
+                    {% endif %}
+
+                </h5>
+            </div>
+        </ul>
+    </div>
+</header>
 
 
-	<div class="container" style="margin-top: 5px">
-		{% with messages = get_flashed_messages() %}
-			{% if messages %}
-				{% for message in messages %}
-					<div class="alert alert-warning alert-dismissible" role="alert">
-					<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-					</button>
-						{{message}}
-					</div>
-				{% endfor %}
-			{% endif %}
-		{% endwith %}
-		
-		{% block content %}
+<div class="container" style="margin-top: 5px">
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-		{% endblock %}
+    {% block content %}
 
-	</div>
-  </body>
+    {% endblock %}
+
+</div>
+</body>
 
 <div style="position: fixed; bottom: 0px;">
-<!-- Yandex.Metrika informer -->
-<a href="https://metrika.yandex.ru/stat/?id=30940756&amp;from=informer"
-target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/30940756/1_0_F7F8FFFF_D7D8E0FF_0_pageviews"
-style="width:80px; height:15px; border:0;" alt="Яндекс.Метрика" title="Яндекс.Метрика: данные за сегодня (просмотры)" onclick="try{Ya.Metrika.informer({i:this,id:30940756,lang:'ru'});return false}catch(e){}"/></a>
-<!-- /Yandex.Metrika informer -->
+    <!-- Yandex.Metrika informer -->
+    <a href="https://metrika.yandex.ru/stat/?id=30940756&amp;from=informer"
+       target="_blank" rel="nofollow"><img src="//bs.yandex.ru/informer/30940756/1_0_F7F8FFFF_D7D8E0FF_0_pageviews"
+                                           style="width:80px; height:15px; border:0;" alt="Яндекс.Метрика"
+                                           title="Яндекс.Метрика: данные за сегодня (просмотры)"
+                                           onclick="try{Ya.Metrika.informer({i:this,id:30940756,lang:'ru'});return false}catch(e){}"/></a>
+    <!-- /Yandex.Metrika informer -->
 
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-(function (d, w, c) {
-	(w[c] = w[c] || []).push(function() {
-		try {
-			w.yaCounter30940756 = new Ya.Metrika({id:30940756,
-					webvisor:true,
-					clickmap:true,
-					trackLinks:true,
-					accurateTrackBounce:true});
-		} catch(e) { }
-	});
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function () {
+                try {
+                    w.yaCounter30940756 = new Ya.Metrika({
+                        id: 30940756,
+                        webvisor: true,
+                        clickmap: true,
+                        trackLinks: true,
+                        accurateTrackBounce: true
+                    });
+                } catch (e) {
+                }
+            });
 
-	var n = d.getElementsByTagName("script")[0],
-		s = d.createElement("script"),
-		f = function () { n.parentNode.insertBefore(s, n); };
-	s.type = "text/javascript";
-	s.async = true;
-	s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+            var n = d.getElementsByTagName("script")[0],
+                    s = d.createElement("script"),
+                    f = function () {
+                        n.parentNode.insertBefore(s, n);
+                    };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
 
-	if (w.opera == "[object Opera]") {
-		d.addEventListener("DOMContentLoaded", f, false);
-	} else { f(); }
-})(document, window, "yandex_metrika_callbacks");
-</script>
-<noscript><div><img src="//mc.yandex.ru/watch/30940756" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else {
+                f();
+            }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript>
+        <div><img src="//mc.yandex.ru/watch/30940756" style="position:absolute; left:-9999px;" alt=""/></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
 </div>
 
 </html>
